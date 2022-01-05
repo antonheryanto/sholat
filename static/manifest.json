@@ -1,0 +1,16 @@
+{
+	"name": "Jadual Solat",
+	"short_name": "Jadual Solat",
+	"start_url": "/index.html",
+	"background_color": "#ffffff",
+	"theme_color": "#ffffff",
+	"display": "standalone",
+	"icons": [
+		{
+			"src": "icons/icon-128x128.png",
+			"sizes": "128x128",
+			"type": "image/png",
+			"purpose": "any maskable"
+		}
+	]
+}
