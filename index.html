@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content="Jadual Sholat" />
+		<title>Jadual Solat</title>
+		<link rel="icon" href="/favicon.png" />
+		<link rel="manifest" crossorigin="use-credentials" href="/manifest.json" />
+		
+
+		
+
+		<link rel="stylesheet" href="/_app/assets/start-61d1577b.css">
+		<link rel="modulepreload" href="/_app/start-e7b05a54.js">
+		<link rel="modulepreload" href="/_app/chunks/vendor-25d9d209.js">
+		<link rel="modulepreload" href="/_app/layout.svelte-5e07325c.js">
+		<link rel="modulepreload" href="/_app/pages/index.svelte-ea6be73a.js">
+
+		<script type="module">
+			import { start } from "/_app/start-e7b05a54.js";
+			start({
+				target: document.querySelector("#svelte"),
+				paths: {"base":"","assets":""},
+				session: {},
+				route: true,
+				spa: false,
+				trailing_slash: "never",
+				hydrate: {
+					status: 200,
+					error: null,
+					nodes: [
+						import("/_app/layout.svelte-5e07325c.js"),
+						import("/_app/pages/index.svelte-ea6be73a.js")
+					],
+					url: new URL("http://prerender/"),
+					params: {}
+				}
+			});
+		</script><script>
+			if ('serviceWorker' in navigator) {
+				navigator.serviceWorker.register('/service-worker.js');
+			}
+		</script>
+	</head>
+	<body>
+		<div id="svelte">
+
+
+<h1>Jadual Solat</h1>
+<h2>Mon Jan 10 2022 20:49:15 GMT+0800 (Malaysia Time)</h2>
+<table><thead><tr><th>Imsak</th>
+        <th>Subuh</th>
+        <th>Syuruk</th>
+        <th>Zohor</th>
+        <th>Asar</th>
+        <th>Maghrib</th>
+        <th>Isyak</th></tr></thead>
+<tbody><tr><td>6:01 am</td><td>6:11 am</td><td>7:22 am</td><td>1:23 pm</td><td>4:46 pm</td><td>7:21 pm</td><td>8:35 pm</td></tr></tbody></table>
+
+</div>
+	</body>
+</html>
