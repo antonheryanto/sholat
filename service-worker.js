@@ -1,15 +1,15 @@
-const timestamp = 1641818955351;
+const timestamp = 1641856337004;
 const build = [
-  "/_app/start-e7b05a54.js",
-  "/_app/assets/start-61d1577b.css",
-  "/_app/layout.svelte-5e07325c.js",
-  "/_app/error.svelte-2cff73e8.js",
-  "/_app/pages/index.svelte-ea6be73a.js",
-  "/_app/chunks/vendor-25d9d209.js"
+  "/sholat/_app/start-31b54016.js",
+  "/sholat/_app/assets/start-61d1577b.css",
+  "/sholat/_app/layout.svelte-5e07325c.js",
+  "/sholat/_app/error.svelte-2cff73e8.js",
+  "/sholat/_app/pages/index.svelte-ea6be73a.js",
+  "/sholat/_app/chunks/vendor-25d9d209.js"
 ];
 const files = [
-  "/favicon.png",
-  "/manifest.json"
+  "/sholat/favicon.png",
+  "/sholat/manifest.json"
 ];
 const worker = self;
 const CACHE_NAME = `static-cache-${timestamp}`;
