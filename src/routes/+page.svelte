@@ -18,6 +18,7 @@
 <table>
 <thead>
     <tr>
+        <th>Tarikh</th>
         <th>Imsak</th>
         <th>Subuh</th>
         <th>Syuruk</th>

@@ -1,70 +1,67 @@
-import { build, files, timestamp } from '$service-worker';
+// <reference no-default-lib="true"/>
+/// <reference lib="esnext" />
+/// <reference lib="webworker" />
  
-const worker = (self as unknown) as ServiceWorkerGlobalScope;
-const CACHE_NAME = `static-cache-${timestamp}`;
- 
-const to_cache = build.concat(files);
- 
-worker.addEventListener('install', (event) => {
-  console.log('[ServiceWorker] Install');
- 
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('[ServiceWorker] Pre-caching offline page');
-      return cache.addAll(to_cache).then(() => {
-        worker.skipWaiting();
-      });
-    }),
-  );
-});
- 
-worker.addEventListener('activate', (event) => {
-  console.log('[ServiceWorker] Activate');
-  // Remove previous cached data from disk
-  event.waitUntil(
-    caches.keys().then(async (keys) =>
-      Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            console.log('[ServiceWorker] Removing old cache', key);
-            return caches.delete(key);
-          }
-        }),
-      ),
-    ),
-  );
-  worker.clients.claim();
-});
- 
-/**
- * Fetch the asset from the network and store it in the cache.
- * Fall back to the cache if the user is offline.
- */
-async function fetchAndCache(request: Request) {
-	const cache = await caches.open(`offline${timestamp}`);
+const sw = /** @type {ServiceWorkerGlobalScope} */ (/** @type {unknown} */ (self));
 
-	try {
-		const response = await fetch(request);
-		cache.put(request, response.clone());
-		return response;
-	} catch (err) {
-		const response = await cache.match(request);
-		if (response) return response;
+import { build, files, version } from '$service-worker';
 
-		throw err;
-	}
-}
+// Create a unique cache name for this deployment
+const CACHE = `cache-${version}`;
+const ASSETS = [
+  ...build, // the app itself
+  ...files  // everything in `static`
+];
 
-self.addEventListener('fetch', (event) => {
-  console.log('[ServiceWorker] Fetch', event.request.url);
-  if (event.request.mode !== 'navigate') {
-    return;
+self.addEventListener('install', (event) => {
+  // Create a new cache and add all files to it
+  async function addFilesToCache() {
+    const cache = await caches.open(CACHE);
+    await cache.addAll(ASSETS);
   }
-  event.respondWith(
-    fetch(event.request).catch(() => {
-      return caches.open(CACHE_NAME).then((cache) => {
-        return cache.match('offline.html');
-      });
-    }),
-  );
+ 
+  event.waitUntil(addFilesToCache());
+});
+
+self.addEventListener('activate', (event) => {
+  // Remove previous cached data from disk
+  async function deleteOldCaches() {
+    for (const key of await caches.keys()) {
+      if (key !== CACHE) await caches.delete(key);
+    }
+  }
+ 
+  event.waitUntil(deleteOldCaches());
+});
+ 
+ 
+self.addEventListener('fetch', (event) => {
+  // ignore POST requests etc
+  if (event.request.method !== 'GET') return;
+ 
+  async function respond() {
+    const url = new URL(event.request.url);
+    const cache = await caches.open(CACHE);
+ 
+    // `build`/`files` can always be served from the cache
+    if (ASSETS.includes(url.pathname)) {
+      return cache.match(event.request);
+    }
+ 
+    // for everything else, try the network first, but
+    // fall back to the cache if we're offline
+    try {
+      const response = await fetch(event.request);
+ 
+      if (response.status === 200) {
+        cache.put(event.request, response.clone());
+      }
+ 
+      return response;
+    } catch {
+      return cache.match(event.request);
+    }
+  }
+ 
+  event.respondWith(respond());
 });
