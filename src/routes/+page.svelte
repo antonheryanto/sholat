@@ -42,7 +42,7 @@
     </div>
     {#each time as m, i}
     <div id="time-{timeRefs[i]}">
-        <div class="center { isActive(i, date.getHours(), timeRefs) ? ' label' : ''}">{labels[i+1]}</div>
+        <div class="{ isActive(i, date.getHours(), timeRefs) ? ' label' : ''}">{labels[i+1]}</div>
         <div class="{ isActive(i, date.getHours(), timeRefs) ? ' active' : ''}">{getTime(timeRefs[i], m)}</div>
     </div>
     {/each}
@@ -101,6 +101,9 @@
         }
     }
     @media (max-width: 30rem) {
+        .time { margin-top: 0.8rem;}
+        .time div { margin-top: 0.3rem; }
         .active { font-size: 7rem;}
+        .label { font-size: 2rem;}
     }
 </style>
