@@ -7,7 +7,7 @@
 	"display": "standalone",
 	"icons": [
 		{
-			"src": "icons/icon-128x128.png",
+			"src": "/favicon.png",
 			"sizes": "128x128",
 			"type": "image/png",
 			"purpose": "any maskable"

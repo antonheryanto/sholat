@@ -25,9 +25,8 @@
     
     let timeEl;
     onMount(() => {
-		const interval = setInterval(() => date = new Date(), 1000);
-        timeIndex = getIndex(8, timeRefs);
-        console.log(timeIndex)
+		const interval = setInterval(() => date = new Date(), 1000 * 60);
+        timeIndex = getIndex(date.getHours(), timeRefs);
         timeEl = document.getElementById(`time-${timeRefs[timeIndex]}`);
         if (timeEl)
             timeEl.scrollIntoView();
