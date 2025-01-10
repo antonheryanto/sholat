@@ -5,23 +5,30 @@
     let ix = $derived(getDayIndex(date) * 8);
     let hijr = $derived(times.slice(ix, ix+2));
     let time = $derived(times.slice(ix+2, ix+2+6));
+    let timeIndex = $state(0);
+
     
     /**
-     * @param {number} i
      * @param {number} hour
      * @param {Array<number>} timeRefs
      */
-    function isActive (i, hour, timeRefs) {
-        if (i == timeRefs.length - 1)
-            return hour >= timeRefs[i] || hour < timeRefs[0]
-        return hour >= timeRefs[i] && hour < timeRefs[i+1];
+    function getIndex (hour, timeRefs) {
+        if (hour <= timeRefs[0] || hour > timeRefs[timeRefs.length - 1])
+            return 0
+        for (let i = timeRefs.length - 1; i > -1; i--){
+            if (hour > timeRefs[i])
+                return i + 1;
+        }
+        return 0;
     }
+
     
     let timeEl;
-
     onMount(() => {
 		const interval = setInterval(() => date = new Date(), 1000);
-        timeEl = document.getElementById('time-20');
+        timeIndex = getIndex(8, timeRefs);
+        console.log(timeIndex)
+        timeEl = document.getElementById(`time-${timeRefs[timeIndex]}`);
         if (timeEl)
             timeEl.scrollIntoView();
 		return () => clearInterval(interval);
@@ -42,8 +49,8 @@
     </div>
     {#each time as m, i}
     <div id="time-{timeRefs[i]}">
-        <div class="{ isActive(i, date.getHours(), timeRefs) ? ' label' : ''}">{labels[i+1]}</div>
-        <div class="{ isActive(i, date.getHours(), timeRefs) ? ' active' : ''}">{getTime(timeRefs[i], m)}</div>
+        <div class="{ i == timeIndex ? ' label' : ''}">{labels[i+1]}</div>
+        <div class="{ i == timeIndex ? ' active' : ''}">{getTime(timeRefs[i], m)}</div>
     </div>
     {/each}
 </div>
